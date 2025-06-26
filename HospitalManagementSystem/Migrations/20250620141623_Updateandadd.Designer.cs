@@ -4,6 +4,7 @@ using HospitalManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HospitalManagementSystem.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250620141623_Updateandadd")]
+    partial class Updateandadd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,7 +97,7 @@ namespace HospitalManagementSystem.Migrations
                     b.Property<int>("DiseaseTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DoctorName")
+                    b.Property<int>("DoctorId")
                         .HasColumnType("int");
 
                     b.Property<string>("FatherName")
@@ -111,6 +114,9 @@ namespace HospitalManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PatientTypeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -126,6 +132,10 @@ namespace HospitalManagementSystem.Migrations
                     b.HasIndex("BloodGroupId");
 
                     b.HasIndex("DiseaseTypeId");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientTypeId");
 
                     b.HasIndex("WardId");
 
@@ -169,19 +179,29 @@ namespace HospitalManagementSystem.Migrations
             modelBuilder.Entity("HospitalManagementSystem.Models.PatientRegistration", b =>
                 {
                     b.HasOne("HospitalManagementSystem.Models.BloodGroup", "BloodGroup")
-                        .WithMany()
+                        .WithMany("PatientRegistrations")
                         .HasForeignKey("BloodGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("HospitalManagementSystem.Models.DiseaseType", "DiseaseType")
-                        .WithMany()
+                        .WithMany("PatientRegistrations")
                         .HasForeignKey("DiseaseTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("HospitalManagementSystem.Models.Doctor", "Doctor")
+                        .WithMany("PatientRegistrations")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HospitalManagementSystem.Models.PatientType", null)
+                        .WithMany("PatientRegistrations")
+                        .HasForeignKey("PatientTypeId");
+
                     b.HasOne("HospitalManagementSystem.Models.Ward", "Ward")
-                        .WithMany()
+                        .WithMany("PatientRegistrations")
                         .HasForeignKey("WardId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -190,7 +210,34 @@ namespace HospitalManagementSystem.Migrations
 
                     b.Navigation("DiseaseType");
 
+                    b.Navigation("Doctor");
+
                     b.Navigation("Ward");
+                });
+
+            modelBuilder.Entity("HospitalManagementSystem.Models.BloodGroup", b =>
+                {
+                    b.Navigation("PatientRegistrations");
+                });
+
+            modelBuilder.Entity("HospitalManagementSystem.Models.DiseaseType", b =>
+                {
+                    b.Navigation("PatientRegistrations");
+                });
+
+            modelBuilder.Entity("HospitalManagementSystem.Models.Doctor", b =>
+                {
+                    b.Navigation("PatientRegistrations");
+                });
+
+            modelBuilder.Entity("HospitalManagementSystem.Models.PatientType", b =>
+                {
+                    b.Navigation("PatientRegistrations");
+                });
+
+            modelBuilder.Entity("HospitalManagementSystem.Models.Ward", b =>
+                {
+                    b.Navigation("PatientRegistrations");
                 });
 #pragma warning restore 612, 618
         }

@@ -4,6 +4,7 @@ using HospitalManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HospitalManagementSystem.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250620141258_UpdateAlltablead")]
+    partial class UpdateAlltablead
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,13 +91,13 @@ namespace HospitalManagementSystem.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
-                    b.Property<int>("BloodGroupId")
+                    b.Property<int?>("BloodGroupId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DiseaseTypeId")
+                    b.Property<int?>("DiseaseTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DoctorName")
+                    b.Property<int?>("DoctorId")
                         .HasColumnType("int");
 
                     b.Property<string>("FatherName")
@@ -111,6 +114,9 @@ namespace HospitalManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PatientTypeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -118,7 +124,7 @@ namespace HospitalManagementSystem.Migrations
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("WardId")
+                    b.Property<int?>("WardId")
                         .HasColumnType("int");
 
                     b.HasKey("PatientId");
@@ -126,6 +132,10 @@ namespace HospitalManagementSystem.Migrations
                     b.HasIndex("BloodGroupId");
 
                     b.HasIndex("DiseaseTypeId");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientTypeId");
 
                     b.HasIndex("WardId");
 
@@ -168,29 +178,50 @@ namespace HospitalManagementSystem.Migrations
 
             modelBuilder.Entity("HospitalManagementSystem.Models.PatientRegistration", b =>
                 {
-                    b.HasOne("HospitalManagementSystem.Models.BloodGroup", "BloodGroup")
-                        .WithMany()
-                        .HasForeignKey("BloodGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("HospitalManagementSystem.Models.BloodGroup", null)
+                        .WithMany("PatientRegistrations")
+                        .HasForeignKey("BloodGroupId");
 
-                    b.HasOne("HospitalManagementSystem.Models.DiseaseType", "DiseaseType")
-                        .WithMany()
-                        .HasForeignKey("DiseaseTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("HospitalManagementSystem.Models.DiseaseType", null)
+                        .WithMany("PatientRegistrations")
+                        .HasForeignKey("DiseaseTypeId");
 
-                    b.HasOne("HospitalManagementSystem.Models.Ward", "Ward")
-                        .WithMany()
-                        .HasForeignKey("WardId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("HospitalManagementSystem.Models.Doctor", null)
+                        .WithMany("PatientRegistrations")
+                        .HasForeignKey("DoctorId");
 
-                    b.Navigation("BloodGroup");
+                    b.HasOne("HospitalManagementSystem.Models.PatientType", null)
+                        .WithMany("PatientRegistrations")
+                        .HasForeignKey("PatientTypeId");
 
-                    b.Navigation("DiseaseType");
+                    b.HasOne("HospitalManagementSystem.Models.Ward", null)
+                        .WithMany("PatientRegistrations")
+                        .HasForeignKey("WardId");
+                });
 
-                    b.Navigation("Ward");
+            modelBuilder.Entity("HospitalManagementSystem.Models.BloodGroup", b =>
+                {
+                    b.Navigation("PatientRegistrations");
+                });
+
+            modelBuilder.Entity("HospitalManagementSystem.Models.DiseaseType", b =>
+                {
+                    b.Navigation("PatientRegistrations");
+                });
+
+            modelBuilder.Entity("HospitalManagementSystem.Models.Doctor", b =>
+                {
+                    b.Navigation("PatientRegistrations");
+                });
+
+            modelBuilder.Entity("HospitalManagementSystem.Models.PatientType", b =>
+                {
+                    b.Navigation("PatientRegistrations");
+                });
+
+            modelBuilder.Entity("HospitalManagementSystem.Models.Ward", b =>
+                {
+                    b.Navigation("PatientRegistrations");
                 });
 #pragma warning restore 612, 618
         }

@@ -6,8 +6,10 @@ namespace HospitalManagementSystem.Models
     {
         [Key]
         public int PatientTypeId { get; set; }
-        [Required(ErrorMessage = "Patient Type Name is required")]  
+
+        [Required(ErrorMessage = "Patient Type Name is required")]
         public string? PatientTypeName { get; set; }
-        public ICollection<PatientRegistration>? PatientRegistrations { get; set; }
+
+        //public ICollection<PatientRegistration>? PatientRegistrations { get; set; }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using HospitalManagementSystem.DTOs;
 using HospitalManagementSystem.Models;
 
 namespace HospitalManagementSystem.Mapping
@@ -8,7 +7,7 @@ namespace HospitalManagementSystem.Mapping
     {
         public MappingPatientRegistration()
         {
-            CreateMap<PatientRegistration, PatientRegistrationDTOs>().ReverseMap();
+            CreateMap<PatientRegistration, PatientRegistrationDto>().ReverseMap();
         }
     }
 }

@@ -24,8 +24,9 @@ namespace HospitalManagementSystem
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddScoped(typeof(IPatientRegistrationServices<>), typeof(PatientRegistrationServices<>));
             builder.Services.AddScoped(typeof(IPatientRegistrationRepository<>), typeof(PatientRegistrationRepository<>));
-            builder.Services.AddScoped<IPatientTypeRepository, PatientTypeRepository>();
-            builder.Services.AddScoped<IPatientTypeService, PatientTypeService>();
+            builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+            builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+            //builder.Services.AddScoped<IPatientTypeService, PatientTypeService>();
 
 
             var app = builder.Build();
